@@ -42,12 +42,30 @@ func LeerConsola() {
 	log.Print(text)
 }
 
-func GenerarYEnviarPaquete() {
+func GenerarYEnviarPaquete(ip string, puerto int) {
 	paquete := Paquete{}
 	// Leemos y cargamos el paquete
+	reader := bufio.NewReader(os.Stdin)
+	log.Println("Ingrese los mensajes")
 
-	log.Printf("paqute a enviar: %+v", paquete)
+	for {
+		text, _ := reader.ReadString('\n')
+
+		//Una vez presionado el caracter finalizador
+		if text == "\n" {
+			// Genero log sobre el paquete a enviar
+			log.Printf("paqute a enviar: %+v", paquete)
+
+			break
+		}
+
+		log.Print(text)
+
+		paquete.Valores = append(paquete.Valores, text)
+	}
+
 	// Enviamos el paqute
+	EnviarPaquete(ip, puerto, paquete)
 }
 
 func EnviarMensaje(ip string, puerto int, mensajeTxt string) {
